@@ -13,6 +13,6 @@ O valor deverá ser apresentado com 2 casas após o ponto.
 cod_peca_1, num_peca_1, valor_peca_1 = input().split()
 cod_peca_2, num_peca_2, valor_peca_2 = input().split()
 
-valor_a_pagar = float(num_peca_1 * valor_peca_1 + num_peca_2 * valor_peca_2)
+valor_a_pagar = float(int(num_peca_1) * float(valor_peca_1) + int(num_peca_2) * float(valor_peca_2))
 
 print("VALOR A PAGAR: R$ {0:.2f}".format(valor_a_pagar))
