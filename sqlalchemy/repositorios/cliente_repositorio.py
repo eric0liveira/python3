@@ -1,41 +1,43 @@
-import fabrica_conexao
+from dominios.db import Cliente
+from fabricas import fabrica_conexao
+from queries import cliente_query
+
 
 class ClienteRepositorio():
 
-    def listar_clientes(self):
-        fabrica = fabrica_conexao.FabricaConexao()
-        conexao = fabrica.conectar()
-        try:
-            cursor = fabrica.cursor()
-            cursor.execute("SELECT * FROM cliente")
-            print(cursor.fetchall())
-        finally:
-            conexao.close()
+    def listar_clientes(self, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        clientes = query_cliente.listar_clientes(sessao)
 
-    def inserir_cliente(self, cliente):
-        fabrica = fabrica_conexao.FabricaConexao()
-        conexao = fabrica.conectar()
-        try:
-            cursor = fabrica.cursor()
-            cursor.execute("INSERT INTO cliente (nome, idade) VALUES (%s, %s)", (cliente.nome, cliente.idade))
-        finally:
-            conexao.close()
+        return clientes
 
-    def editar_cliente(self, id_cliente, cliente):
-        fabrica = fabrica_conexao.FabricaConexao()
-        conexao = fabrica.conectar()
-        try:
-            cursor = fabrica.cursor()
-            cursor.execute("UPDATE cliente SET nome=%(nome)s, idade=%(idade)s WHERE idcliente=%(id_cliente)s",
-                       ({'nome': cliente.nome, 'idade': cliente.idade, 'id_cliente': id_cliente}))
-        finally:
-            conexao.close()
+    def listar_cliente_id(self, id_cliente, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        cliente = query_cliente.listar_cliente_id(id_cliente, sessao)
 
-    def remover_cliente(self, id_cliente):
-        fabrica = fabrica_conexao.FabricaConexao()
-        conexao = fabrica.conectar()
-        try:
-            cursor = fabrica.cursor()
-            cursor.execute("DELETE FROM cliente WHERE idcliente=%s", (id_cliente,))
-        finally:
-            conexao.close()
+        return cliente
+    
+    def listar_cliente_nome(self, nome_cliente, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        clientes = query_cliente.listar_cliente_nome(nome_cliente, sessao)
+
+        return clientes
+
+    def listar_cliente_nome_ordenado(self, nome_cliente, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        clientes = query_cliente.listar_cliente_nome_ordenado(nome_cliente, sessao)
+
+        return clientes
+
+    def inserir_cliente(self, cliente, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        novo_cliente = Cliente(nome=cliente.nome, idade=cliente.idade)
+        query_cliente.inserir_cliente(novo_cliente, sessao)
+
+    def editar_cliente(self, id_cliente, cliente, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        query_cliente.editar_cliente(id_cliente, cliente, sessao)
+
+    def remover_cliente(self, id_cliente, sessao):
+        query_cliente = cliente_query.ClienteQuery()
+        query_cliente.remover_cliente(id_cliente, sessao)
